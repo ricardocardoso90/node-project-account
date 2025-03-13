@@ -1,10 +1,4 @@
-// export const fs = require('fs');
-// fs.readFile('text.txt', 'utf8', (error, data) => {
-//   error ? console.log(error) : console.log(data);
-// });
+const path = require('path');
+const extension = path.extname('script.js');
 
-export function nomeCompleto(nome, sobrenome) {
-  return console.log(`${nome} ${sobrenome}`);
-};
-
-nomeCompleto('Ricardo', 'Cardoso');
+console.log(extension);
