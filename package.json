@@ -3,6 +3,7 @@
     "chalk": "^5.4.1",
     "enquirer": "^2.4.1",
     "express": "^4.21.2",
+    "inquirer": "^12.5.0",
     "lodash": "^4.17.21",
     "minimist": "^1.2.8"
   },
@@ -10,7 +11,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "node index.js",
+    "start": "node index.js"
   },
   "repository": {
     "type": "git",
