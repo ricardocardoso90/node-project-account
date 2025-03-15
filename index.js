@@ -16,24 +16,13 @@ function operation() {
         case 'Criar uma conta':
           createAccount();
           break;
-        case 'Consultar saldo':
-          checkBalance();
-          break;
-        case 'Depositar':
-          deposit();
-          break;
-        case 'Sacar':
-          withdraw();
-          break;
-        case 'Sair':
-          console.log(chalk.red('Até mais!'));
-          break;
-        default:
-          console.log(chalk.red('Opção inválida'));
-          break;
       }
     })
     .catch(error => console.log(error));
 };
-
 operation();
+
+function createAccount() {
+  console.log(chalk.bgGreen.black("Parabéns por escolher o nosso banco!"));
+  console.log(chalk.green("Defina as opções da sua conta a seguir!"));
+}
