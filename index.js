@@ -1,6 +1,7 @@
 import fs from "fs";
 import chalk from "chalk";
 import inquirer from "inquirer";
+import { error } from "console";
 
 console.log("Iniciando o projeto: Account");
 
@@ -19,7 +20,7 @@ function operation() {
           break;
 
         case 'Consultar saldo':
-
+          getAccountBalance();
           break;
 
         case 'Depositar':
@@ -126,3 +127,21 @@ function getAccount(accountName) {
   const accountJSON = fs.readFileSync(`accounts/${accountName}.json`, { encoding: 'utf-8', flag: 'r' });
   return JSON.parse(accountJSON);
 };
+
+//CONSULTAR SALDO:
+function getAccountBalance() {
+  inquirer.prompt([{
+    name: 'accountName',
+    message: 'Qual o nome da sua conta?'
+  }])
+    .then(response => {
+      const accountName = response['accountName'];
+
+      !checkAccount(accountName) && getAccountBalance();
+
+      const accountData = getAccount(accountName);
+      console.log(chalk.bgBlue.black(`O saldo da conta ${accountName} é R$${accountData.balance}`));
+      operation();
+    })
+    .catch(error => console.log(error));
+}
