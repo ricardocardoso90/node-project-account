@@ -4,6 +4,7 @@ import inquirer from "inquirer";
 
 console.log("Iniciando o projeto: Account");
 
+//FUNÇÃO PARA OPERAÇÕES:
 function operation() {
   inquirer.prompt([{
     type: 'list',
@@ -41,11 +42,12 @@ operation();
 
 function createAccount() {
   console.log(chalk.bgGreen.black("Parabéns por escolher o nosso banco!"));
-  console.log(chalk.green("Defina as opções da sua conta a seguir!"));
+  console.log(chalk.bgGreen.white("Defina as opções da sua conta a seguir!"));
 
   buildAccount();
 };
 
+//FUNÇÃO PARA CRIAR CONTA:
 function buildAccount() {
   inquirer.prompt([{
     name: 'accountName',
@@ -73,6 +75,7 @@ function buildAccount() {
     .catch(error => console.log(error));
 };
 
+//FUNÇÃO PARA DEPÓSITO:
 function deposit() {
   inquirer.prompt([{
     name: 'accountName',
@@ -81,18 +84,16 @@ function deposit() {
     .then(response => {
       const accountName = response['accountName'];
 
-      if (!checkAccount(accountName)) {
-        return deposit();
-      }
+      !checkAccount(accountName) && deposit();
 
       inquirer.prompt([{
-        nome: 'amount',
+        name: 'amount',
         message: 'Qual o valor do depósito?'
       }])
         .then(response => {
           const amount = response['amount'];
           addAmount(accountName, amount);
-          deposit();
+          operation();
 
         })
         .catch(error => console.log(error));
@@ -102,9 +103,9 @@ function deposit() {
 
 function checkAccount(accountName) {
   if (!fs.existsSync(`accounts/${accountName}.json`)) {
-    console.log(chalk.red('Essa conta não existe, escolha outro nome!'));
+    console.log(chalk.bgRed.black('Essa conta não existe, escolha outro nome!'));
     return false;
-  }
+  };
 
   return true;
 };
@@ -114,7 +115,7 @@ function addAmount(accountName, amount) {
   if (!amount) {
     console.log(chalk.bgRed.black('Valor inválido!'));
     return deposit();
-  }
+  };
 
   accountData.balance += parseFloat(amount);
   fs.writeFileSync(`accounts/${accountName}.json`, JSON.stringify(accountData), (error) => console.log(error));
@@ -122,10 +123,6 @@ function addAmount(accountName, amount) {
 };
 
 function getAccount(accountName) {
-  const accountJSON = fs.readFileSync(`accounts/${accountName}.json`, {
-    encoding: 'utf-8',
-    flag: 'r',
-  });
-
+  const accountJSON = fs.readFileSync(`accounts/${accountName}.json`, { encoding: 'utf-8', flag: 'r' });
   return JSON.parse(accountJSON);
 };
