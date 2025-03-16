@@ -110,8 +110,15 @@ function checkAccount(accountName) {
 };
 
 function addAmount(accountName, amount) {
-  const account = getAccount(accountName);
-  console.log(account);
+  const accountData = getAccount(accountName);
+  if (!amount) {
+    console.log(chalk.bgRed.black('Valor inválido!'));
+    return deposit();
+  }
+
+  accountData.balance += parseFloat(amount);
+  fs.writeFileSync(`accounts/${accountName}.json`, JSON.stringify(accountData), (error) => console.log(error));
+  console.log(chalk.green(`Depósito de R$${amount} efetuado com sucesso!`));
 };
 
 function getAccount(accountName) {
