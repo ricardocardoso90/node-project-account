@@ -1,7 +1,6 @@
 import fs from "fs";
 import chalk from "chalk";
 import inquirer from "inquirer";
-import { error } from "console";
 
 console.log("Iniciando o projeto: Account");
 
@@ -28,7 +27,7 @@ function operation() {
           break;
 
         case 'Sacar':
-
+          removeAmount();
           break;
 
         case 'Sair':
@@ -145,3 +144,33 @@ function getAccountBalance() {
     })
     .catch(error => console.log(error));
 }
+
+//SACAR VALOR:
+function removeAmount() {
+  inquirer.prompt([{
+    name: 'accountName',
+    message: 'Qual o nome da sua conta?'
+  }])
+    .then(response => {
+      const accountName = response['accountName'];
+
+      !checkAccount(accountName) && removeAmount();
+
+      inquirer.prompt([{
+        name: 'amount',
+        message: 'Qual o valor do saque?'
+      }])
+        .then(response => {
+          const amount = response['amount'];
+          console.log(amount);
+
+          // amount.balance -= parseFloat(amount);
+          // fs.writeFileSync(`accounts/${accountName}.json`, JSON.stringify(amount), (error) => console.log(error));
+          // console.log(chalk.green(`Valor de R$${amount} removido com sucesso!`));
+
+          operation();
+        })
+        .catch(error => console.log(error));
+    })
+    .catch(error => console.log(error));
+};
