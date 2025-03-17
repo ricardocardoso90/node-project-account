@@ -2,8 +2,6 @@
 
 **Tecnologias utilizadas:**
 
-- [Node]()
-- [Express]()
 - [Chalk]()
 - [inquirer]()
 

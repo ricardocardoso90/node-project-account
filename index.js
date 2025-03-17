@@ -1,4 +1,7 @@
+//MÓDULO INTERNO:
 import fs from "fs";
+
+//MÓDULOS DE TERCEIROS:
 import chalk from "chalk";
 import inquirer from "inquirer";
 
@@ -10,7 +13,13 @@ function operation() {
     type: 'list',
     name: 'action',
     message: 'O que você deseja fazer?',
-    choices: ['Criar uma conta', 'Consultar saldo', 'Depositar', 'Sacar', 'Sair'],
+    choices: [
+      'Criar uma conta',
+      'Consultar saldo',
+      'Depositar',
+      'Sacar',
+      'Sair'
+    ]
   }])
     .then(response => {
       switch (response.action) {
@@ -67,7 +76,11 @@ function buildAccount() {
         return;
       }
 
-      fs.writeFileSync(`accounts/${accountName}.json`, '{"balance": 0}', (error) => console.log(error));
+      fs.writeFileSync(
+        `accounts/${accountName}.json`,
+        '{"balance": 0}',
+        (error) => console.log(error));
+
       console.log(chalk.green('Conta criada com sucesso!'));
 
       operation();
@@ -118,12 +131,19 @@ function addAmount(accountName, amount) {
   };
 
   accountData.balance += parseFloat(amount);
-  fs.writeFileSync(`accounts/${accountName}.json`, JSON.stringify(accountData), (error) => console.log(error));
+  fs.writeFileSync(
+    `accounts/${accountName}.json`,
+    JSON.stringify(accountData),
+    (error) => console.log(error));
+
   console.log(chalk.green(`Depósito de R$${amount} efetuado com sucesso!`));
 };
 
 function getAccount(accountName) {
-  const accountJSON = fs.readFileSync(`accounts/${accountName}.json`, { encoding: 'utf-8', flag: 'r' });
+  const accountJSON = fs.readFileSync(
+    `accounts/${accountName}.json`,
+    { encoding: 'utf-8', flag: 'r' });
+
   return JSON.parse(accountJSON);
 };
 
@@ -162,13 +182,22 @@ function removeAmount() {
       }])
         .then(response => {
           const amount = response['amount'];
-          console.log(amount);
+          const accountData = getAccount(accountName);
 
-          // amount.balance -= parseFloat(amount);
-          // fs.writeFileSync(`accounts/${accountName}.json`, JSON.stringify(amount), (error) => console.log(error));
-          // console.log(chalk.green(`Valor de R$${amount} removido com sucesso!`));
+          if (!amount || accountData.balance < amount) {
+            console.log(chalk.bgRed.black('Valor inválido!'));
+            return removeAmount();
+          } else {
+            accountData.balance -= parseFloat(amount);
+            console.log(chalk.bgGreen.white(`Saque de R$${amount} efetuado com sucesso!`));
+          };
 
-          operation();
+          fs.writeFileSync(
+            `accounts/${accountName}.json`,
+            JSON.stringify(accountData),
+            (error) => console.log(error));
+
+          return operation();
         })
         .catch(error => console.log(error));
     })
