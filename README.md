@@ -3,7 +3,7 @@
 **Tecnologias utilizadas:**
 
 - [Chalk]()
-- [inquirer]()
+- [Inquirer]()
 
 ## Instalação:
 
